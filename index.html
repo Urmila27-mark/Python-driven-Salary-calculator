@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Salary Calculator</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+  <div class="container">
+    <h1>💼 Salary Bill Generator</h1>
+    <input type="number" id="empId" placeholder="Enter Employee ID" />
+    <button onclick="generateBill()">Generate Bill</button>
+
+    <div id="result" class="salary-card"></div>
+  </div>
+<br>
+<button onclick="viewHistory()">📜 View Salary History</button>
+<div id="history" class="salary-card"></div>
+
+ <script>
+  async function generateBill() {
+    const empId = document.getElementById("empId").value;
+    const result = document.getElementById("result");
+    result.innerHTML = "Calculating...";
+
+    const res = await fetch("/api/salary", {
+      method: "POST",
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ employee_id: empId })
+    });
+
+    const data = await res.json();
+    if (!res.ok) {
+      result.innerHTML = `<p class="error">${data.error}</p>`;
+      return;
+    }
+
+    const rows = Object.entries(data.components)
+      .map(([key, val]) => `<tr><td>${key}</td><td>₹${val}</td></tr>`)
+      .join('');
+
+    result.innerHTML = `
+      <h2>${data.name}</h2>
+      <h3>${data.department}</h3>
+      <table>
+        <thead><tr><th>Component</th><th>Amount</th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+      <h3 class="net">Net Salary: ₹${data.final_salary}</h3>
+    `;
+  }
+
+  async function viewHistory() {
+    const empId = document.getElementById("empId").value;
+    const historyDiv = document.getElementById("history");
+    historyDiv.innerHTML = "Loading history...";
+
+    const res = await fetch(`/api/history/${empId}`);
+    const data = await res.json();
+
+    if (!res.ok || !data.history.length) {
+      historyDiv.innerHTML = `<p class="error">No history found for ID ${empId}</p>`;
+      return;
+    }
+
+    let html = `<h3>Salary History for ${data.name} (ID: ${data.employee_id})</h3>`;
+    html += `<table><thead><tr><th>Month</th><th>Final Salary</th><th>Basic</th><th>DA</th><th>Deductions</th><th>Bonus</th><th>Overtime</th><th>Leave Penalty</th></tr></thead><tbody>`;
+    for (let item of data.history) {
+      html += `<tr>
+        <td>${item.month}</td>
+        <td>₹${item.final_salary}</td>
+        <td>₹${item.basic}</td>
+        <td>₹${item.da}</td>
+        <td>₹${item.deduction}</td>
+        <td>₹${item.bonus}</td>
+        <td>₹${item.overtime}</td>
+        <td>₹${item.leave_penalty}</td>
+      </tr>`;
+    }
+    html += `</tbody></table>`;
+    historyDiv.innerHTML = html;
+  }
+</script>
+</body>
+</html>

@@ -1,0 +1,90 @@
+body {
+  font-family: 'Segoe UI', sans-serif;
+  background: linear-gradient(to right, #8e2de2, #4a00e0);
+  color: #333;
+  margin: 0;
+  padding: 2rem;
+}
+
+.container {
+  max-width: 700px;
+  margin: auto;
+  background: white;
+  padding: 2rem;
+  border-radius: 12px;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+  text-align: center;
+}
+
+input {
+  padding: 10px;
+  width: 60%;
+  font-size: 1rem;
+  margin-top: 1rem;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  font-size: 1rem;
+  margin-top: 10px;
+  background-color: #4a00e0;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #3700b3;
+}
+
+.salary-card {
+  margin-top: 2rem;
+  text-align: left;
+  background: #f4f4f4;
+  padding: 1rem;
+  border-radius: 10px;
+}
+
+.salary-card h2 {
+  text-align: center;
+  margin-bottom: 0.2rem;
+}
+
+.salary-card h3 {
+  text-align: center;
+  margin-top: 0;
+  font-weight: normal;
+  color: #555;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 1rem;
+}
+
+th, td {
+  padding: 10px;
+  border-bottom: 1px solid #ddd;
+  text-align: left;
+}
+
+th {
+  background-color: #4a00e0;
+  color: white;
+}
+
+.net {
+  text-align: center;
+  margin-top: 1.5rem;
+  font-size: 1.2rem;
+  color: green;
+}
+
+.error {
+  color: red;
+  font-weight: bold;
+}
